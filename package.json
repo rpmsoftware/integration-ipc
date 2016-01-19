@@ -1,0 +1,19 @@
+{
+    "name": "integration-amqp",
+    "description": "RPM AMQP helpers",
+    "version": "0.0.0",
+    "author": "Dmitriy Serdyukov",
+    "main": "index.js",
+    "files": [
+        "index.js"
+    ],
+    "license": "ISC",
+    "dependencies": {
+        "amqplib": "^0.4.0"
+    },
+    "private": true,
+    "engines": {
+        "node": ">=0.10.x"
+    }
+}
+
