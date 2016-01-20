@@ -15,10 +15,10 @@ function Sender(channel, queue) {
 Sender.prototype.close = function (closeConnection) {
     if (this.channel) {
         var self = this;
-        return self.channel.close().then(function(){
-            var ch = self.channel; 
+        return self.channel.close().then(function () {
+            var ch = self.channel;
             self.channel = undefined;
-            if(closeConnection) {
+            if (closeConnection) {
                 return ch.connection.close();
             }
         });
@@ -38,7 +38,7 @@ Sender.prototype.send = function (data) {
 
 function createChannel(url) {
     var conn;
-    console.log('AMQP. Connecting to ',url);
+    console.log('AMQP. Connecting to ', url);
     return amqplib.connect(url)
         .then(function (connect) {
             conn = connect;
@@ -48,12 +48,12 @@ function createChannel(url) {
             console.log('Channel created. URL: %s', url);
             return channel;
         },
-        function (error) {
-            if(conn) {
-                conn.close();
-            }
-            throw error;
-        });
+            function (error) {
+                if (conn) {
+                    conn.close();
+                }
+                throw error;
+            });
 }
 
 exports.createSender = function (queue, url) {
@@ -78,10 +78,19 @@ exports.createReciever = function (queue, url, callback) {
                 data = JSON.parse(data);
             } catch (error) {
             }
-            if (callback) {
-                callback(data, msg, channel);
+            var p = Promise.resolve();
+            if (typeof callback === 'function') {
+                p = p.then(callback(data, msg, channel));
             }
-            channel.ack(msg);
+            p = p.then(
+                function () {
+                    channel.ack(msg);
+                },
+                function (error) {
+                    channel.ack(msg);
+                    console.error(error);
+                });
+            return p;
         }, { noAck: false });
         console.log('Listening');
         return channel;
