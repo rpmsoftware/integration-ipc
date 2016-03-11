@@ -1,19 +1,19 @@
 {
-    "name": "integration-amqp",
-    "description": "RPM AMQP helpers",
+    "name": "integration-ipc",
+    "description": "IPC",
     "version": "0.0.0",
     "author": "Dmitriy Serdyukov",
-    "main": "index.js",
     "files": [
-        "index.js"
+        "amqp.js","memcache.js"
     ],
     "license": "ISC",
     "dependencies": {
-        "amqplib": "^0.4.0"
+        "amqplib": "^0.4.1",
+        "memjs": "^0.8.9"
     },
     "private": true,
     "engines": {
-        "node": ">=0.10.x"
+        "node": ">=5.x"
     }
 }
 
