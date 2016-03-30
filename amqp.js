@@ -68,20 +68,21 @@ exports.createReciever = function (queue, url, callback) {
         callback = url;
         url = undefined;
     }
+    if (typeof callback !== 'function') {
+        throw new Error('Callback function is expected');
+    }
     url = url || DEFAULT_URL;
     return createChannel(url).then(function (channel) {
         channel.assertQueue(queue, { durable: true });
         channel.prefetch(1);
+        var p = Promise.resolve();
         channel.consume(queue, function (msg) {
             var data = msg.content.toString();
             try {
                 data = JSON.parse(data);
             } catch (error) {
             }
-            var p = Promise.resolve();
-            if (typeof callback === 'function') {
-                p = p.then(callback(data, msg, channel));
-            }
+            p = p.then(callback(data, msg, channel));
             p = p.then(
                 function () {
                     channel.ack(msg);
