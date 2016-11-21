@@ -4,32 +4,22 @@ var Client = memJs.Client;
 
 Client.prototype.getPromised = function (key) {
     var self = this;
-    return new Promise(function (resolve, reject) {
-        self.get(key, function (err, val) {
-            err ? reject(err) : resolve(JSON.parse(val));
-        });
-    });
+    return new Promise((resolve, reject) => self.get(key, (err, val) => err ? reject(err) : resolve(JSON.parse(val))));
 };
 
 
 Client.prototype.setPromised = function (key, val) {
     var self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         val = JSON.stringify(val);
-        self.set(key, val, function (err, success) {
-            err ? reject(err) : resolve(success);
-        });
+        self.set(key, val, (err, success) => err ? reject(err) : resolve(success));
     });
 };
 
 
 Client.prototype.flushPromised = function () {
     var self = this;
-    return new Promise(function (resolve, reject) {
-        self.flush(function (err, success) {
-            err ? reject(err) : resolve(success);
-        });
-    });
+    return new Promise((resolve, reject) => self.flush((err, success) => err ? reject(err) : resolve(success)));
 };
 
 

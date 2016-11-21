@@ -1,10 +1,11 @@
 {
     "name": "integration-ipc",
     "description": "IPC",
-    "version": "0.1.1",
+    "version": "1.0.0",
     "author": "Dmitriy Serdyukov",
     "files": [
-        "amqp.js","memcache.js"
+        "amqp.js",
+        "memcache.js"
     ],
     "license": "ISC",
     "dependencies": {
@@ -13,7 +14,6 @@
     },
     "private": true,
     "engines": {
-        "node": ">=0.12.x"
+        "node": ">=4.4.x"
     }
 }
-

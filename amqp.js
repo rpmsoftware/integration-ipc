@@ -1,8 +1,6 @@
-/* global process */
-/* global Buffer */
 var amqplib = require('amqplib');
 
-var DEFAULT_URL = process.env['CLOUDAMQP_URL'] || 'amqp://localhost';
+var DEFAULT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';
 
 function Sender(channel, queue) {
     this.channel = channel;
@@ -15,7 +13,7 @@ function Sender(channel, queue) {
 Sender.prototype.close = function (closeConnection) {
     if (this.channel) {
         var self = this;
-        return self.channel.close().then(function () {
+        return self.channel.close().then(() => {
             var ch = self.channel;
             self.channel = undefined;
             if (closeConnection) {
@@ -40,27 +38,25 @@ function createChannel(url) {
     var conn;
     console.log('AMQP. Connecting to ', url);
     return amqplib.connect(url)
-        .then(function (connect) {
+        .then(connect => {
             conn = connect;
             return connect.createChannel();
         })
-        .then(function (channel) {
+        .then(channel => {
             console.log('Channel created. URL: %s', url);
             return channel;
         },
-            function (error) {
-                if (conn) {
-                    conn.close();
-                }
-                throw error;
-            });
+        error => {
+            if (conn) {
+                conn.close();
+            }
+            throw error;
+        });
 }
 
 exports.createSender = function (queue, url) {
     url = url || DEFAULT_URL;
-    return createChannel(url).then(function (channel) {
-        return new Sender(channel, queue);
-    });
+    return createChannel(url).then(channel => new Sender(channel, queue));
 };
 
 exports.createReciever = function (queue, url, callback) {
@@ -72,25 +68,21 @@ exports.createReciever = function (queue, url, callback) {
         throw new Error('Callback function is expected');
     }
     url = url || DEFAULT_URL;
-    return createChannel(url).then(function (channel) {
+    return createChannel(url).then(channel => {
         channel.assertQueue(queue, { durable: true });
         channel.prefetch(1);
         var p = Promise.resolve();
-        channel.consume(queue, function (msg) {
+        channel.consume(queue, msg => {
             var data = msg.content.toString();
             try {
                 data = JSON.parse(data);
             } catch (error) {
             }
             p = p.then(callback(data, msg, channel));
-            p = p.then(
-                function () {
-                    channel.ack(msg);
-                },
-                function (error) {
-                    channel.ack(msg);
-                    console.error(error);
-                });
+            p = p.then(() => channel.ack(msg), error => {
+                channel.ack(msg);
+                console.error(error);
+            });
             return p;
         }, { noAck: false });
         console.log('Listening');
