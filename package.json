@@ -1,17 +1,14 @@
 {
     "name": "integration-ipc",
     "description": "IPC",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": "Dmitriy Serdyukov",
     "files": [
+        "dependencies.json",
         "amqp.js",
         "memcache.js"
     ],
     "license": "ISC",
-    "dependencies": {
-        "amqplib": "^0.4.1",
-        "memjs": "^0.8.9"
-    },
     "private": true,
     "engines": {
         "node": ">=4.4.x"
