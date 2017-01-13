@@ -1,4 +1,6 @@
 {
-    "amqplib": "^0.4.1",
-    "memjs": "^0.8.9"
+    "memjs": "^0.x.x",
+    "object-hash": "^1.x.x",
+    "integration-common": "https://github.com/rpmsoftware/integration-common.git",
+    "amqplib": "^0.x.x"
 }
