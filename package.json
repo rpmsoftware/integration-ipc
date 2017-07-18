@@ -1,7 +1,7 @@
 {
     "name": "integration-ipc",
     "description": "IPC",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "author": "Dmitriy Serdyukov",
     "files": [
         "dependencies.json",
@@ -11,6 +11,6 @@
     "license": "ISC",
     "private": true,
     "engines": {
-        "node": ">=4.4.x"
+        "node": "4.x.x"
     }
 }
