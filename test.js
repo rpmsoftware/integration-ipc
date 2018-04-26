@@ -1,9 +1,16 @@
-var key = 'vvv';
-var cache = require('./memcache').Client.create();
-cache.flushPromised()
-    .then(() => cache.setPromised(key, 100))
-    .then(() => cache.getPromised(key))
-    .then((v) => {
-        console.log(v);
-        cache.close();
-    });
+
+const assert = require('assert');
+const key = 'vvv';
+const store = require('./store').createStore('memjs');
+(async () => {
+    await store.flush();
+    const v = 'somevalue';
+    await store.set(key, v);
+    const v2 = await store.get(key);
+    assert.equal(v, v2);
+    console.log('done');
+})().then(() => store.close(), err => {
+    store.close()
+    console.error(err)
+});
+
