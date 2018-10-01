@@ -1,15 +1,13 @@
 {
     "name": "integration-ipc",
     "description": "IPC",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "author": "Dmitriy Serdyukov",
     "files": [
         "amqp.js",
         "memcache.js",
-        "store/common.js",
-        "store/fs.js",
-        "store/index.js",
-        "store/memjs.js"
+        "store/*.js",
+        "mq/*.js"
     ],
     "dependencies": {
         "integration-common": "https://github.com/rpmsoftware/integration-common.git"
